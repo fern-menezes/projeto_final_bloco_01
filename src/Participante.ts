@@ -80,6 +80,9 @@ export abstract class Participante{
 			case 1:
 				categoria = "Maratona";
 				break;
+			case 2:
+					categoria = "Meia Maratona";
+					break;
 			default:
 				categoria = "Tipo Inválido ⚠️";
 		}

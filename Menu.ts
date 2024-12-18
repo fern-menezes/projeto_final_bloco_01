@@ -1,23 +1,28 @@
 import readlinesync = require("readline-sync");
-import { Maratona } from "./src/model/Maratona";
-import { ParticipanteController } from "./src/model/ParticipanteController";
+import { Maratona } from "./src/Maratona";
+import { MeiaMaratona } from "./src/MeiaMaratona";
+import { ParticipanteController } from "./src/ParticipanteController";
+import { colors } from './src/util/Colors';
 
 export function main() {
     let opcao: number, id: number, idade: number, categoria: number, distancia: number, pausas: number;
     let nome: string, cidade: string, jaCorreu: string, tempo: string, inicio: string;
-    let categoriaTipo = ['Maratona'];
+    let categoriaTipo = ['Maratona', 'Meia Maratona'];
 
     let participantes: ParticipanteController = new ParticipanteController();
-    preCadastrados(participantes);  // Use a instância existente
+
+    preCadastrados(participantes);
 
     while (true) {
         menu();
         opcao = readlinesync.questionInt('Digite a opcao desejada: ');
 
         if (opcao === 0) {
+            console.log(colors.bg.black, colors.fg.yellow);
             console.log("\n------------------------------------------");
             console.log("Obrigado por usar o nosso sistema 🏃‍➡️");
             sobre();
+            console.log(colors.reset);
             process.exit(0);
         }
 
@@ -56,8 +61,24 @@ export function main() {
 
                         participantes.cadastrar(new Maratona(participantes.gerarNumero(), nome, idade, cidade, jaCorreu, categoria, distancia, tempo, inicio, pausas));
                         break;
+                    case 2:
+                        console.log("Informe a distância percorrida: ");
+                        distancia = readlinesync.questionFloat('');
+
+                        console.log("Informe o tempo utilizado: ");
+                        tempo = readlinesync.question('');
+
+                        console.log("Horário de início da Corrida: ");
+                        inicio = readlinesync.question('');
+
+                        console.log("Quantidade de pausas realizadas: ");
+                        pausas = readlinesync.questionInt('');
+
+                        participantes.cadastrar(new MeiaMaratona(participantes.gerarNumero(), nome, idade, cidade, jaCorreu, categoria, distancia, tempo, inicio, pausas));
+                        break;
                 }
 
+                keyPress()
                 break;
             case 2:
                 console.log("📝 Listar todos os participantes");
@@ -69,6 +90,8 @@ export function main() {
                 console.log("Digite o id do participante: ");
                 id = readlinesync.questionInt('');
                 participantes.consultarId(id);
+
+                keyPress()
                 break;
             case 4:
                 console.log("🔄 Atualizar participante");
@@ -105,6 +128,7 @@ export function main() {
                 } else {
                     console.log("Participante não Encontrado!");
                 }
+                keyPress()
                 break;
             case 5:
                 console.log("🗑️ Deletar participante");
@@ -115,11 +139,12 @@ export function main() {
                 console.log("Você realmente deseja excluir o participante com ID:", id, "? (s/n)");
                 const confirmacao = readlinesync.question('').toLowerCase();
 
-                if (confirmacao === 's' || confirmacao === 'sim') {
+                if (confirmacao === 's') {
                     participantes.deletar(id);
                 } else {
                     console.log("Operação de exclusão cancelada.");
                 }
+                keyPress()
                 break;
             default:
                 console.log("Opção Inválida! ❌");
@@ -136,6 +161,7 @@ export function sobre() {
 };
 
 export function menu() {
+    console.log(colors.bg.black, colors.fg.yellow);
     console.log("\n----------------------------------------");
     console.log("             MARATONA RUN4FUN             ");
     console.log("------------------------------------------");
@@ -147,14 +173,17 @@ export function menu() {
     console.log("       5 - DELETAR PARTICIPANTE           ");
     console.log("       0 - SAIR                           ");
     console.log("                                          ");
+    console.log(colors.reset);
 };
 
 function preCadastrados(participantes: ParticipanteController): void {
     participantes.cadastrar(new Maratona(participantes.gerarNumero(), "João Silva", 28, "São Paulo", "Sim", 1, 42.195, "3h 45m", "7:00 AM", 2));
     participantes.cadastrar(new Maratona(participantes.gerarNumero(), "Maria Oliveira", 34, "Rio de Janeiro", "Não", 1, 21.0975, "1h 50m", "8:00 AM", 1));
-    participantes.cadastrar(new Maratona(participantes.gerarNumero(), "Fernanda Lima", 29, "Brasília", "Sim", 1, 10, "45m", "9:00 AM", 0));
+    participantes.cadastrar(new MeiaMaratona(participantes.gerarNumero(), "Fernanda Lima", 29, "Brasília", "Sim", 2, 10, "45m", "9:00 AM", 0));
     participantes.cadastrar(new Maratona(participantes.gerarNumero(), "Carlos Eduardo", 40, "Belo Horizonte", "Sim", 1, 5, "20m", "10:00 AM", 1));
-    participantes.cadastrar(new Maratona(participantes.gerarNumero(), "Aline Souza", 25, "Porto Alegre", "Não", 1, 42.195, "4h 10m", "7:30 AM", 3));
-
-    console.log("Participantes pré-cadastrados com sucesso!");
+    participantes.cadastrar(new MeiaMaratona(participantes.gerarNumero(), "Aline Souza", 25, "Porto Alegre", "Não", 2, 42.195, "4h 10m", "7:30 AM", 3));
+}
+function keyPress(): void {
+    console.log("\nPressione enter para continuar...");
+    readlinesync.prompt();
 }
