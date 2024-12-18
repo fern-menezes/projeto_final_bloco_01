@@ -6,18 +6,20 @@ export abstract class Participante{
     private _id: number;
     private _nome: string;
     private _idade: number;
+	private _cidade: string;
+	private _jaCorreu: string;
     private _categoria: number;
-    private _cidade: string;
-    private _jaCorreu: string;
+    
 
 
-	constructor(id: number, nome: string, idade: number, categoria: number, cidade: string, jaCorreu: string) {
+	constructor(id: number, nome: string, idade: number, cidade: string, jaCorreu: string, categoria: number, ) {
 		this._id = id;
 		this._nome = nome;
 		this._idade = idade;
-		this._categoria = categoria;
 		this._cidade = cidade;
 		this._jaCorreu = jaCorreu;
+		this._categoria = categoria;
+		
 	}
 
 	public get id(): number {
@@ -33,14 +35,13 @@ export abstract class Participante{
 		return this._idade;
 	}
 
-	public get categoria(): number {
-		return this._categoria;
-	}
-
 	public get cidade(): string {
 		return this._cidade;
 	}
 
+	public get categoria(): number {
+		return this._categoria;
+	}
 
 	public get jaCorreu(): string {
 		return this._jaCorreu;
@@ -58,13 +59,14 @@ export abstract class Participante{
 		this._idade = value;
 	}
 
+	public set cidade(value: string) {
+		this._cidade = value;
+	}
+
 	public set categoria(value: number) {
 		this._categoria = value;
 	}
 
-	public set cidade(value: string) {
-		this._cidade = value;
-	}
 
 	public set jaCorreu(value: string) {
 		this._jaCorreu = value;
@@ -89,8 +91,8 @@ export abstract class Participante{
         console.log(`Matrícula do participante: ${this._id}`);
         console.log(`Nome do participante: ${this._nome}`);
         console.log(`Idade: ${this._idade}`);
+		console.log(`Em qual cidade que deseja participar? : ${this._cidade}`);
 		console.log(`Categoria: ${categoria}`);
-        console.log(`Em qual cidade que deseja participar? : ${this._cidade}`);
         console.log(`Já participou de uma maratona?: ${this._jaCorreu}`);
 
 
